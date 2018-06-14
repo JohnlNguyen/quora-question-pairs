@@ -3,9 +3,10 @@ import gensim
 import logging
 import time
 import numpy as np
+from sklearn.metrics import log_loss
 import matplotlib.pyplot as plt
 
-data = pd.read_csv("/Users/esmondchu/Dropbox/UC_Davis/STAT/STA141CSpring18/Final_Project/train.csv")
+data = pd.read_csv("train.csv")
 
 #################################
 #########Data Cleaning###########
@@ -116,6 +117,16 @@ def cal_accuracy_model(thr):
 
 #get accuracy (testing different thresholds)
 accuracy_thr_model = [cal_accuracy_model(i) for i in list(np.arange(0,1,0.1))]
+
+#################################
+############Log Loss#############
+#################################
+
+#using threshold = 0.5
+predicted_model = list(((np.array(overlap_score_model) - 0.5) > 0) * 1)
+true = list(new_data_df['is_duplicate'])
+
+print(log_loss(true, predicted_model))
 
 #################################
 ###Plot Accuracy vs Threshold####
